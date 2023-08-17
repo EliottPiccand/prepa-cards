@@ -1,0 +1,21 @@
+{% extends "cards/base.html" %}
+
+{% load static %}
+
+{% block head %}
+<script type="text/javascript" src="{% static "js/card.js" %}"></script>
+{% endblock head %}
+
+{% block main %}
+<div id="question" class="w-3/4 flex flex-col items-center p-4 border rounded bg-slate-50 mt-6">
+    <p class="latex-compile">{{ question.question }}</p>
+    <a class="mt-4 py-1 bg-purple-600 rounded-full px-4 py-1 text-white hover:bg-purple-500">Voir la réponse</a>
+</div>
+
+<div id="answer" class="w-3/4 flex flex-col items-center p-4 border rounded bg-slate-50 mt-6">
+    <h1 class="text-xl">{{ question.chapter.subject.name }} : {{ question.chapter.name }} <span class="italic">{{ question.chapter.get_year_display }}</span></h1>
+    <p class="italic latex-compile">{{ question.question }}</p>
+    <p class="latex-compile">{{ question.answer }}</p>
+    <a href="{% url "cards:card" %}" class="mt-4 py-1 bg-purple-600 rounded-full px-4 py-1 text-white hover:bg-purple-500">Question Suivante</a>
+</div>
+{% endblock main %}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>Prépa Quiz</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/latex.js/dist/latex.js"></script>
+
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}" />
+        {% block head %}
+        {% endblock head %}
+    </head>
+    <body>
+        <main class="flex items-center flex-col p-6">
+            {% block main %}
+            {% endblock main %}
+        </main>
+    </body>
+</html>

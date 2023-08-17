@@ -1,0 +1,107 @@
+{% extends "cards/base.html" %}
+
+{% load static %}
+
+{% block head %}
+<script type="text/javascript" src="{% static "js/start_quiz.js" %}"></script>
+{% endblock head %}
+
+{% block main %}
+<h1 class="text-4xl">Prépa Quiz</h1>
+
+<form method="post" class="w-3/4 flex flex-col items-center p-4 border rounded bg-slate-50 mt-6">
+    {% csrf_token %}
+
+    <h2 class="text-2xl">Choisissez les paramètre du quiz</h2>
+
+    {% for message in messages %}
+        {% if message|stringformat:"s" == "invalid_session" %}
+        <p class="text-sm text-red-400">Session invalide !</p>
+        {% elif message|stringformat:"s" == "quiz_done" %}
+        <p class="text-sm text-green-400">Quiz terminé !</p>
+        {% endif %}
+    {% endfor %}
+
+    <div class="w-1/2 mt-4">
+        <div>
+            <h3 class="text-xl">Années :</h3>
+
+            {% for message in messages %}
+                {% if message|stringformat:"s" == "year_empty" %}
+                <p class="text-sm text-red-400">Au moins une année doit être cochée !</p>
+                {% endif %}
+            {% endfor %}
+    
+            <div class="pl-3">
+                <input type="checkbox" name="year" value="mp2i" id="year-mp2i" checked show-attr="mp2i" />
+                <label for="year-mp2i">MP2I</label>
+            </div>
+    
+            <div class="pl-3">
+                <input type="checkbox" name="year" value="mpi" id="year-mpi" checked show-attr="mpi" />
+                <label for="year-mpi">MPI</label>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h3 class="text-xl">Matières :</h3>
+
+            {% for message in messages %}
+                {% if message|stringformat:"s" == "subject_empty" %}
+                <p class="text-sm text-red-400">Au moins une matières doit être cochée !</p>
+                {% endif %}
+            {% endfor %}
+
+            {% for subject in subjects %}
+            {% with subject.id|stringformat:"s" as subject_id %}
+            <div class="border-t pl-3 py-1">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <input type="checkbox" name="subjects" value="{{ subject.id }}" id="subject-{{ subject.id }}" show-div="chapters-{{ subject.id }}" />
+                        <label for="subject-{{ subject.id }}">{{ subject.name }}</label>
+                    </div>
+                    <a class="text-xs text-blue-600 hover:text-blue-400 cursor-pointer" unselect-all="chapters-{{ subject.id }}">Tous déséléctionner</a>
+                </div>
+
+                {% for message in messages %}       
+                    {% if message|stringformat:"s" == "chapters_"|add:subject_id|add:"_empty" %}
+                    <p class="text-sm text-red-400">Au moins un chapitre doit être coché !</p>
+                    {% endif %}
+                {% endfor %}
+
+                <div id="chapters-{{ subject.id }}" class="pl-3">
+                    {% for chapter in subject.chapter_set.all|dictsort:"name" %}
+                    <div {{ chapter.get_year_display }}>
+                        <input type="checkbox" name="chapters-{{ subject.id }}" value="{{ chapter.id }}" id="chapter-{{ chapter.id }}" checked />
+                        <label for="chapter-{{ chapter.id }}"  class="text-xs">{{ chapter.name }} <span class="italic">{{ chapter.get_year_display }}</span></label>
+                    </div>
+                    {% empty %}
+                    <p class="text-sm text-red-400">Aucun chapitre n'est disponible pour le moment</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+        </div>
+
+        <div class="mt-4">
+            <div>
+                <h3 class="text-xl">Nombre de question :</h3>
+
+                {% for message in messages %}
+                    {% if message|stringformat:"s" == "nb_too_shorts" %}
+                    <p class="text-sm text-red-400">Le nombre de questions doit être supérieur à 1 !</p>
+                    {% endif %}
+                {% endfor %}
+        
+                <div class="pl-3">
+                    <label for="nb-questions">Nombre de questions :</label>
+                    <input type="number" name="nb-questions" value="25" id="nb-questions" min="1" class="border rounded-full px-2 remove-arrow w-12" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="submit" value="Commencer" class="mt-4 py-1 bg-purple-600 rounded-full px-4 py-1 text-white hover:bg-purple-500">
+</form>
+{% endblock main %}
