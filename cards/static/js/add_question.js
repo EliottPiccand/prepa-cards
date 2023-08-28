@@ -40,9 +40,18 @@ window.addEventListener("load", (event) => {
                 generator = latexjs.parse(textarea.value, { generator: generator })
 
                 latexParent.appendChild(generator.domFragment())
-                var toRemove = document.querySelector(".katex-html")
+                var toRemove = document.querySelectorAll(".katex-html")
                 if (toRemove) {
-                    toRemove.remove()
+                    toRemove.forEach((element) => {
+                        element.remove()
+                    })
+                }
+
+                var toRemoveTwo = document.querySelectorAll(".mord.mathnormal")
+                if (toRemoveTwo) {
+                    toRemoveTwo.forEach((element) => {
+                        element.remove()
+                    })
                 }
             } catch (error) {
                 var p = document.createElement("p")

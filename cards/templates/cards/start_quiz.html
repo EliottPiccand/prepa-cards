@@ -9,7 +9,7 @@
 {% block main %}
 <h1 class="text-4xl">Prépa Quiz</h1>
 
-<form method="post" class="w-3/4 flex flex-col items-center p-4 border rounded bg-slate-50 mt-6">
+<form method="post" class="lg:w-3/4 sm:w-full flex flex-col items-center p-4 border rounded bg-slate-50 mt-6">
     {% csrf_token %}
 
     <h2 class="text-2xl">Choisissez les paramètre du quiz</h2>
@@ -22,7 +22,7 @@
         {% endif %}
     {% endfor %}
 
-    <div class="w-1/2 mt-4">
+    <div class="lg:w-1/2 sm:w-full mt-4">
         <div>
             <h3 class="text-xl">Années :</h3>
 

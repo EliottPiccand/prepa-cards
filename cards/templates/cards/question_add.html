@@ -39,7 +39,7 @@
         <label for="chapter">Chapitre :</label>
         <select name="chapter" id="chapter" class="rounded-full bg-white border px-4 py-1" required>
             {% for subject in subjects %}
-            {% for chapter in subject.chapter_set.all %}
+            {% for chapter in subject.chapter_set.all|dictsort:"name" %}
             <option value="{{ chapter.id }}" subject-id="{{ subject.id }}" year="{{ chapter.year }}">{{ chapter.name }}</option>
             {% endfor %}
             {% endfor %}
